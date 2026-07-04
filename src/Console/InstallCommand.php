@@ -15,8 +15,13 @@ class InstallCommand extends Command
     {
         $this->components->info('Installing Form Builder…');
 
-        $this->publishTag('form-builder-config', 'config → config/form-builder.php');
-        $this->publishTag('form-builder-assets', 'Vue components → resources/js/vendor/form-builder');
+        // Config: only overwrite when explicitly forced, so a customized
+        // config/form-builder.php is preserved on re-install.
+        $this->publishTag('form-builder-config', 'config → config/form-builder.php', $this->option('force'));
+
+        // Assets: a vendored mirror of the package. Always overwrite so an
+        // updated package can never be shadowed by a stale published copy.
+        $this->publishTag('form-builder-assets', 'Vue components → resources/js/vendor/form-builder', true);
 
         $this->registerVueComponents();
 
@@ -24,18 +29,18 @@ class InstallCommand extends Command
         $this->components->info('Form Builder installed. Remaining steps:');
         $this->components->bulletList([
             'php artisan migrate            (creates the gl_* tables — run your auth/users migration first)',
-            'npm install vuedraggable golden-logic-ui   (required peer dependencies)',
+            'npm install vuedraggable golden-logic-ui vue3-apexcharts apexcharts   (required peer dependencies)',
             'npm run build                  (or: npm run dev)',
         ]);
 
         return self::SUCCESS;
     }
 
-    private function publishTag(string $tag, string $label): void
+    private function publishTag(string $tag, string $label, bool $force): void
     {
         $this->callSilently('vendor:publish', [
             '--tag' => $tag,
-            '--force' => (bool) $this->option('force'),
+            '--force' => $force,
         ]);
 
         $this->components->task($label, fn () => true);
