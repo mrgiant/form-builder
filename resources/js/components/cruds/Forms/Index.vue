@@ -131,7 +131,7 @@
 <script>
 import { GlToast } from 'golden-logic-ui';
 import { markRaw } from 'vue';
-import DatatableAction from '@/components/cruds/Forms/DatatableAction.vue';
+import DatatableAction from './DatatableAction.vue';
 import { loadMultilingual, destroyMultilingual, prepareDataMultilingual } from "@/services/multilingualService";
 
 const StatusBadge = {

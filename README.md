@@ -86,9 +86,20 @@ This registers: `forms-index`, `forms-manage-questions`,
 `forms-questions-answers`, `forms-responses-index`, `forms-workflow-builder`,
 `approvals-inbox`, `approval-tracker`, `form-charts`.
 
-The components require `golden-logic-ui`, `vuedraggable`, and Vue 3 in the host
-(the same deps used before extraction). They are **not** bundled here so the
-host owns a single copy.
+The components require `golden-logic-ui`, `vuedraggable`, and Vue 3 in the host.
+They also import a few **host-provided Vue libraries** via the `@` alias
+(`@` → `resources/js`), which the host must define in `vite.config.js`:
+
+| Import | Provided by host at |
+| --- | --- |
+| `@/services/multilingualService` | `resources/js/services/` |
+| `@/components/fields_departmns/*` | shared field inputs (also used by other host features) |
+| `@/components/fieldsAnswer/*` | shared answer-display inputs |
+| `@/components/Charts/Pie.vue` | shared chart components |
+
+These are intentionally **not** bundled so the host owns a single copy (they are
+shared with other host features). Re-run the publish command after updating the
+package to refresh the copy under `resources/js/vendor/form-builder`.
 
 ## Configuration
 
@@ -102,21 +113,28 @@ host owns a single copy.
 | `middleware` | `['web', 'auth']` | Middleware for the route group. |
 | `user_model` | `App\Models\User` | Approver model. |
 
-## Cutover checklist (host → package as source of truth)
+## Cutover status (GoldenHospital host)
 
-The package currently **coexists** with the host's own copies so nothing breaks.
-To make the package the single source of truth:
+The cutover has been **performed** in the GoldenHospital host — the package is
+the source of truth for the module's models, controllers, and Vue components:
 
-1. Delete the host's `app/Models/{Form,Question,Answer,FormResponse,FormResponse*,FormWorkflow*}.php`
-   and update references to `Mrgiant\FormBuilder\Models\*`.
-2. Delete the host's `app/Http/Controllers/Admin/{Forms,Questions,Answer,Responses,Workflow}Controller.php`.
-3. Remove the host's form route block from `routes/web.php` and set
-   `form-builder.register_routes` to `true`.
-4. Point the controllers' `view()` calls at the `form-builder::` namespace (or
-   keep the published views).
-5. Decouple the host-provided classes in the table above (make them
-   configurable/injectable) for a truly standalone package.
-6. Remove the duplicated `.vue` source from the host and import from the package.
+1. ✅ Host `app/Models/{Form,Question,Answer,FormResponse,FormResponse*,FormWorkflow*}.php`
+   deleted; all references repointed to `Mrgiant\FormBuilder\Models\*`.
+2. ✅ Host `app/Http/Controllers/Admin/{Forms,Questions,Answer,Responses,Workflow}Controller.php`
+   deleted; `routes/web.php` + `routes/api.php` now reference the package controllers.
+   (The route *definitions* stay in the host so they keep the host's admin
+   middleware/locale/gate context; `register_routes` remains `false`.)
+3. ✅ Host `resources/js/components/cruds/Forms/**` and `FormCharts.vue` deleted;
+   `app.js` registers the components via `registerFormBuilder(app, { lazy })`
+   from the published `resources/js/vendor/form-builder`.
+
+Remaining (optional) hardening:
+
+- Blade views still live in the host (the controllers render `admin.forms.*` /
+  `forms.*`, which resolve to the host's layouts). The package ships its own
+  copies under `form-builder::` for external consumers.
+- Decouple the host-provided PHP classes and Vue libraries (tables above) for a
+  fully standalone package.
 
 ## License
 

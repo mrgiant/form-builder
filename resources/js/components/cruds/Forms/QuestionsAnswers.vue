@@ -95,13 +95,13 @@
 
 <script>
 import { GlToast } from 'golden-logic-ui';
-import Group       from '../../fieldsAnswer/Group.vue';
-import GeneralInput from '../../fieldsAnswer/GeneralInput.vue';
-import FileUploadInput from '../../fieldsAnswer/FileUpload.vue';
-import TextArea    from '../../fieldsAnswer/TextArea.vue';
-import SelectOption from '../../fieldsAnswer/Select.vue';
-import CheckboxList from '../../fieldsAnswer/CheckboxList.vue';
-import RadioButton from '../../fieldsAnswer/RadioButton.vue';
+import Group       from '@/components/fieldsAnswer/Group.vue';
+import GeneralInput from '@/components/fieldsAnswer/GeneralInput.vue';
+import FileUploadInput from '@/components/fieldsAnswer/FileUpload.vue';
+import TextArea    from '@/components/fieldsAnswer/TextArea.vue';
+import SelectOption from '@/components/fieldsAnswer/Select.vue';
+import CheckboxList from '@/components/fieldsAnswer/CheckboxList.vue';
+import RadioButton from '@/components/fieldsAnswer/RadioButton.vue';
 
 export default {
   components: { Group, GeneralInput, FileUploadInput, TextArea, SelectOption, CheckboxList, RadioButton },

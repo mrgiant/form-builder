@@ -30,13 +30,13 @@
 </template>
 
 <script>
-import Group from '../../fields_departmns/Group.vue';
-import GeneralInput from '../../fields_departmns/GeneralInput.vue';
-import TextArea from '../../fields_departmns/TextArea.vue';
-import SelectOption from '../../fields_departmns/Select.vue';
-import CheckboxList from '../../fields_departmns/CheckboxList.vue';
-import RadioButton from '../../fields_departmns/RadioButton.vue';
-import LabelField from '../../fields_departmns/Label.vue';
+import Group from '@/components/fields_departmns/Group.vue';
+import GeneralInput from '@/components/fields_departmns/GeneralInput.vue';
+import TextArea from '@/components/fields_departmns/TextArea.vue';
+import SelectOption from '@/components/fields_departmns/Select.vue';
+import CheckboxList from '@/components/fields_departmns/CheckboxList.vue';
+import RadioButton from '@/components/fields_departmns/RadioButton.vue';
+import LabelField from '@/components/fields_departmns/Label.vue';
 
 const inputTypeMap = {
     'Short answer': 'text',
