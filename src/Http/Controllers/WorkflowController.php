@@ -3,7 +3,7 @@
 namespace Mrgiant\FormBuilder\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\WorkflowRunner;
+use Mrgiant\FormBuilder\Services\WorkflowRunner;
 use Mrgiant\FormBuilder\Models\Form;
 use Mrgiant\FormBuilder\Models\FormResponse;
 use Mrgiant\FormBuilder\Models\FormWorkflowEdge;

@@ -3,11 +3,11 @@
 namespace Mrgiant\FormBuilder\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\WorkflowRunner;
+use Mrgiant\FormBuilder\Services\WorkflowRunner;
 use Mrgiant\FormBuilder\Models\Form;
 use Mrgiant\FormBuilder\Models\FormResponse;
 use App\Notifications\GeneralNotficationMailsAttachment;
-use App\Rules\UniqueAnswerResponses;
+use Mrgiant\FormBuilder\Rules\UniqueAnswerResponses;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;

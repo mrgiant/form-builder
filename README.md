@@ -27,16 +27,18 @@ are intentionally left pointing at the `App\` namespace:
 | Referenced class | Used by | Purpose |
 | --- | --- | --- |
 | `App\Http\Controllers\Controller` | all controllers | base controller (auth/validation traits) |
-| `App\Models\User` | `WorkflowController`, `FormResponseWorkflowAction` | approver identity |
-| `App\Http\Services\WorkflowRunner` | `AnswerController`, `WorkflowController` | runs the approval workflow |
-| `App\Rules\UniqueAnswerResponses` | `AnswerController` | submission validation |
+| `App\Models\User` | `WorkflowController`, `FormResponseWorkflowAction`, `Services\WorkflowRunner` | approver identity |
 | `App\Notifications\GeneralNotficationMailsAttachment` | `AnswerController` | submit-notification email |
 | `App\Exports\FormExport` | `ResponsesController` | Excel export (maatwebsite/excel) |
 | `App\Http\Services\ReportsGenerator\PdfFooter` | `ResponsesController` | PDF footer |
 | `App\Http\TranslatorAction\Translator`, `App\Models\Translation` | `Concerns\Translatable` | i18n fields |
 
-Fully decoupling these is a follow-up (see **Cutover checklist**). Until then the
-package composes cleanly inside the GoldenHospital host.
+The workflow engine and its collaborators now live **in the package** —
+`Mrgiant\FormBuilder\Services\WorkflowRunner`,
+`Mrgiant\FormBuilder\Notifications\FormWorkflowNotification`, and
+`Mrgiant\FormBuilder\Rules\UniqueAnswerResponses` — since they are form-domain
+logic, not host infrastructure. The remaining `App\` references above are
+genuine host concerns (identity, generic mail/PDF/Excel tooling, i18n).
 
 ## Installation (local path repository)
 
