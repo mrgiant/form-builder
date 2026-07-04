@@ -3,6 +3,7 @@
 namespace Mrgiant\FormBuilder;
 
 use Illuminate\Support\ServiceProvider;
+use Mrgiant\FormBuilder\Console\InstallCommand;
 
 class FormBuilderServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,10 @@ class FormBuilderServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
+
+            $this->commands([
+                InstallCommand::class,
+            ]);
         }
     }
 

@@ -7,17 +7,16 @@ return [
     | Route registration
     |--------------------------------------------------------------------------
     |
-    | When false (the default), the package does NOT register its own routes.
-    | This is intentional so that installing the package inside an app that
-    | already defines the form routes (e.g. the GoldenHospital host it was
-    | extracted from) does not cause duplicate route-name collisions.
+    | When true (the default), the package automatically registers its own
+    | routes from routes/web.php, wrapped in the group settings below.
     |
-    | During a full cutover — once the host's own form routes are removed —
-    | set this to true to have the package own the routes in routes/web.php.
+    | Set this to false when installing inside an app that already defines the
+    | same form routes (e.g. the GoldenHospital host it was extracted from), to
+    | avoid duplicate route-name collisions.
     |
     */
 
-    'register_routes' => false,
+    'register_routes' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +31,7 @@ return [
 
     'route_name_prefix' => 'admin.',
 
-    'middleware' => ['web', 'auth'],
+    'middleware' => ['web', 'auth', 'AuthGates', 'setLocale'],
 
     /*
     |--------------------------------------------------------------------------
