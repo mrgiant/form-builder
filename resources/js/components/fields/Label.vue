@@ -54,7 +54,7 @@ export default {
                 okButton: "Yes, delete it",
             });
             if (ok) {
-                axios.post(this.delete_base_url ? `${this.delete_base_url}/${id}` : `/admin/departments/${this.question.department_id}/questions/${id}`, { _method: "DELETE" })
+                axios.post(`${this.delete_base_url}/${id}`, { _method: "DELETE" })
                     .then(() => {
                         this.remove_question(this.index);
                         this.QuestionsUpdateOrder();
