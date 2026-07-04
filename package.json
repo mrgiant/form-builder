@@ -1,6 +1,6 @@
 {
     "name": "@mrgiant/form-builder",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Vue 3 form-builder components (builder, field renderers, responses, approval workflow) for the mrgiant/form-builder Laravel package.",
     "license": "MIT",
     "author": "Mohamed Al Wahaibi <mohamed.alwahaibi@golden-logic.com>",

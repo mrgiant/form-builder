@@ -17,6 +17,14 @@ class FormBuilderServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'form-builder');
 
+        // Also register the bundled views under the default (un-namespaced)
+        // paths as a fallback, so controllers that reference bare view names
+        // like 'admin.forms.index' resolve to the package's Blade files. A host
+        // view of the same name still wins (default paths are searched first).
+        $this->callAfterResolving('view', function ($view) {
+            $view->addLocation(__DIR__.'/../resources/views');
+        });
+
         if (config('form-builder.register_routes')) {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         }
