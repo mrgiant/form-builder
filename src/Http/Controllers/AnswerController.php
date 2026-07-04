@@ -8,21 +8,12 @@ use Mrgiant\FormBuilder\Models\Form;
 use Mrgiant\FormBuilder\Models\FormResponse;
 use App\Notifications\GeneralNotficationMailsAttachment;
 use Mrgiant\FormBuilder\Rules\UniqueAnswerResponses;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 
 class AnswerController extends Controller
 {
-    public function index(Request $request)
-    {
-        abort_if(Gate::denies('access_permission'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('admin.permissions.index');
-    }
-
     public function response(Form $form)
     {
         if (! empty($form->custom_html)) {
