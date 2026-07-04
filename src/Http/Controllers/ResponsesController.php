@@ -2,7 +2,7 @@
 
 namespace Mrgiant\FormBuilder\Http\Controllers;
 
-use App\Exports\FormExport;
+use Mrgiant\FormBuilder\Exports\FormExport;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ReportsGenerator\PdfFooter;
 use Mrgiant\FormBuilder\Models\Answer;

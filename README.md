@@ -28,8 +28,7 @@ are intentionally left pointing at the `App\` namespace:
 | --- | --- | --- |
 | `App\Http\Controllers\Controller` | all controllers | base controller (auth/validation traits) |
 | `App\Models\User` | `WorkflowController`, `FormResponseWorkflowAction`, `Services\WorkflowRunner` | approver identity |
-| `App\Notifications\GeneralNotficationMailsAttachment` | `AnswerController` | submit-notification email |
-| `App\Exports\FormExport` | `ResponsesController` | Excel export (maatwebsite/excel) |
+| `App\Notifications\GeneralNotficationMailsAttachment` | `AnswerController` | submit-notification email (host-env: shells out to a node PDF script + hardcoded domain) |
 | `App\Http\Services\ReportsGenerator\PdfFooter` | `ResponsesController` | PDF footer |
 | `App\Http\TranslatorAction\Translator`, `App\Models\Translation` | `Concerns\Translatable` | i18n fields |
 
