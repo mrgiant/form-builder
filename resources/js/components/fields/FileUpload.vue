@@ -4,7 +4,7 @@
       <h3 class="card-title">
         <div class="form-group">
           <label class="" for="">{{
-             show_number ? question.order + ". " + question.label: question.label
+            question.order + ". " + question.label
           }}</label>
             <small  v-if="question.description!=''" class="form-text text-muted" :class="[question.is_rtl == 1 ? ' mr-4 ' : ' ml-4']">{{ question.description }}</small>
         </div>
@@ -55,7 +55,6 @@ export default {
     "QuestionsUpdateOrder",
     "remove_question",
     "index",
-    "show_number",
   ],
 
   methods: {
@@ -74,7 +73,7 @@ export default {
           axios
 
             .post(
-              "/admin/forms/" + this.question.form_id + "/questions/" + id + "",
+              "/admin/departments/" + this.question.department_id + "/questions/" + id + "",
               { _method: "DELETE" }
             )
             .then((res) => {

@@ -1,122 +1,71 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">
-        <div class="form-group">
-          <label class="" for="">{{
-             show_number ? question.order + ". " + question.label: question.label
-          }}</label>
-            <small  v-if="question.description!=''" class="form-text text-muted" :class="[question.is_rtl == 1 ? ' mr-4 ' : ' ml-4']">{{ question.description }}</small>
+    <GlDynamicConfirmation ref="ConfirmationDelete"></GlDynamicConfirmation>
+
+    <div class="bg-white border rounded-lg border-stroke shadow-default dark:border-white/10 dark:bg-gray-900">
+        <div class="flex justify-between px-3 py-4 border-b border-stroke dark:border-white/10">
+            <h3>
+                <div>
+                    <label>{{ question.order + ". " + question.label }}</label>
+                    <small v-if="question.description != ''" class="block mt-1 text-gray-700 dark:text-gray-400"
+                        :class="[question.is_rtl == 1 ? 'mr-4' : 'ml-4']">{{ question.description }}</small>
+                </div>
+            </h3>
+            <div class="flex items-center gap-1">
+                <button type="button" v-on:click.prevent="EditQuestion(question.id)"
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center text-white bg-blue-600 rounded-full cursor-pointer hover:bg-blue-700">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" v-on:click.prevent="deleteQuestion(question.id)"
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center text-white bg-red-600 rounded-full cursor-pointer hover:bg-red-700">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <button v-on:click="toggleMinus(question.id)" type="button"
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center rounded-full cursor-pointer border border-gray-300 dark:border-gray-600">
+                    <i class="fas" :class="isMinus[question.id] ? 'fa-plus' : 'fa-minus'"></i>
+                </button>
+            </div>
         </div>
-      </h3>
-
-      <div class="card-tools">
-        <!-- Collapse Button -->
-        <button
-          type="button"
-          name="edit"
-          v-on:click.prevent="EditQuestion(question.id)"
-          class="edit btn btn-primary btn-sm ml-1"
-        >
-          <i class="fa fa-edit" aria-hidden="true"></i>
-        </button>
-
-        <button
-          class="btn btn-danger btn-sm ml-1"
-          type="button"
-          v-on:click.prevent="deleteQuestion(question.id)"
-        >
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-
-        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-      </div>
-      <!-- /.card-tools -->
+        <div class="flex-auto p-6" v-if="!isMinus[question.id]">
+            <div class="space-y-2">
+                <label v-for="opt in (question.options || [])" :key="opt" class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <input type="checkbox" disabled class="cursor-not-allowed" /> {{ opt }}
+                </label>
+            </div>
+        </div>
     </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-      <div class="form-group">
-        <div :class="[question.is_rtl == 1 ? ' mr-4 mt-2' : ' ml-4 mt-2']">
-
-
-<div class="form-check" v-for="(option, index) in this.question.options" :key="index">
-  <input class="form-check-input" type="checkbox"   :id="'Checkbox'+index" :value="option">
-  <label class="form-check-label" :for="'Checkbox'+index">
-    {{ option }}
-  </label>
-</div>
-
-
-
-    </div>
-      </div>
-    </div>
-    <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
 </template>
 
 <script>
+import { GlDynamicConfirmation, GlToast } from "golden-logic-ui";
+
 export default {
-  components: {},
-  props: [
-    "question",
-    "EditQuestion",
-    "QuestionsUpdateOrder",
-    "remove_question",
-    "index",
-    "show_number",
-  ],
+    components: { GlDynamicConfirmation },
+    props: ["question", "EditQuestion", "QuestionsUpdateOrder", "remove_question", "index", "delete_base_url"],
 
-  data() {
-    return {};
-  },
-
-  methods: {
-    deleteQuestion(id) {
-      this.$swal({
-        title: "Are you sure?",
-        text: "You can't revert your action",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes Delete it!",
-        cancelButtonText: "No, Keep it!",
-        showCloseButton: true,
-        showLoaderOnConfirm: true,
-      }).then((result) => {
-        if (result.value) {
-          axios
-
-            .post(
-              "/admin/forms/" + this.question.form_id + "/questions/" + id + "",
-              { _method: "DELETE" }
-            )
-            .then((res) => {
-              //this.$parent.$options.methods.getQuestions();
-              this.remove_question(this.index);
-              this.QuestionsUpdateOrder();
-              this.$swal(
-                "Deleted",
-                "You successfully deleted this question",
-                "success"
-              );
-            })
-            .catch((error) => {
-              //this.form.errors.record(error.response.data.errors);
-            });
-        } else {
-          this.$swal("Cancelled", "Your question is still intact", "info");
-        }
-      });
+    data() {
+        return { isMinus: [] };
     },
-  },
 
-  mounted() {},
+    methods: {
+        toggleMinus(index) {
+            this.isMinus[index] = !this.isMinus[index];
+        },
+
+        async deleteQuestion(id) {
+            const ok = await this.$refs.ConfirmationDelete.show({
+                title: "Delete Question",
+                message: "Are you sure you want to delete this question? This action cannot be undone.",
+                okButton: "Yes, delete it",
+            });
+            if (ok) {
+                axios.post(this.delete_base_url ? `${this.delete_base_url}/${id}` : `/admin/departments/${this.question.department_id}/questions/${id}`, { _method: "DELETE" })
+                    .then(() => {
+                        this.remove_question(this.index);
+                        this.QuestionsUpdateOrder();
+                        GlToast.methods.add({ message: "Question deleted successfully.", type: "success", duration: 5000 });
+                    });
+            }
+        },
+    },
 };
 </script>
-
-<style scoped lang="scss" >
-</style>
-

@@ -19,7 +19,7 @@ class AnswerTest extends TestCase
 
     public function test_uses_answers_table(): void
     {
-        $this->assertEquals('answers', (new Answer())->getTable());
+        $this->assertEquals('gl_answers', (new Answer())->getTable());
     }
 
     public function test_fillable_contains_expected_fields(): void
@@ -65,7 +65,7 @@ class AnswerTest extends TestCase
             'value'            => 'Yes',
         ]);
 
-        $this->assertDatabaseHas('answers', [
+        $this->assertDatabaseHas('gl_answers', [
             'id'               => $answer->id,
             'form_response_id' => $response->id,
             'question_id'      => $question->id,
@@ -111,7 +111,7 @@ class AnswerTest extends TestCase
 
         $question->delete();
 
-        $this->assertDatabaseMissing('answers', ['id' => $answer->id]);
+        $this->assertDatabaseMissing('gl_answers', ['id' => $answer->id]);
     }
 
     public function test_answer_cascades_on_form_response_delete(): void
@@ -126,7 +126,7 @@ class AnswerTest extends TestCase
 
         $response->delete();
 
-        $this->assertDatabaseMissing('answers', ['id' => $answer->id]);
+        $this->assertDatabaseMissing('gl_answers', ['id' => $answer->id]);
     }
 
     // -------------------------------------------------------------------------

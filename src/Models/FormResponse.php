@@ -9,6 +9,8 @@ class FormResponse extends Model
 {
     use HasAdvancedFilter;
 
+    public $table = 'gl_form_responses';
+
     public $orderable = ['id', 'ip', 'created_at'];
 
     public $filterable = ['id', 'ip', 'created_at'];

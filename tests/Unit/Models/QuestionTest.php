@@ -13,7 +13,7 @@ class QuestionTest extends TestCase
 
     public function test_uses_questions_table(): void
     {
-        $this->assertEquals('questions', (new Question())->getTable());
+        $this->assertEquals('gl_questions', (new Question())->getTable());
     }
 
     public function test_fillable_contains_expected_fields(): void
@@ -82,7 +82,7 @@ class QuestionTest extends TestCase
 
         $form->delete();
 
-        $this->assertDatabaseMissing('questions', ['id' => $question->id]);
+        $this->assertDatabaseMissing('gl_questions', ['id' => $question->id]);
     }
 
     public function test_options_is_persisted_as_array(): void

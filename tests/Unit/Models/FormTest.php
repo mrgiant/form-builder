@@ -14,7 +14,7 @@ class FormTest extends TestCase
 
     public function test_uses_forms_table(): void
     {
-        $this->assertEquals('forms', (new Form())->getTable());
+        $this->assertEquals('gl_forms', (new Form())->getTable());
     }
 
     public function test_fillable_contains_expected_fields(): void
@@ -79,7 +79,7 @@ class FormTest extends TestCase
         $form->slug = 'intake-' . uniqid();
         $form->save();
 
-        $this->assertDatabaseHas('forms', [
+        $this->assertDatabaseHas('gl_forms', [
             'id'   => $form->id,
             'name' => 'Intake',
         ]);

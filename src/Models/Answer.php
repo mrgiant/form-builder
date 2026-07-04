@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    public $table = 'gl_answers';
+
     /**
      * Attributes that are mass assignable
      *

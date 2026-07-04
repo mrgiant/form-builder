@@ -27,9 +27,7 @@
         </div>
         <div class="flex-auto p-6" v-if="!isMinus[question.id]">
             <div class="mb-4">
-                <select class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm dark:bg-gray-800 dark:text-gray-200">
-                    <option v-for="opt in (question.options || [])" :key="opt">{{ opt }}</option>
-                </select>
+                <text-input :type="InputType" :show="false" :field_name="'question_' + question.id" label_name=""></text-input>
             </div>
         </div>
     </div>
@@ -40,7 +38,7 @@ import { GlDynamicConfirmation, GlToast } from "golden-logic-ui";
 
 export default {
     components: { GlDynamicConfirmation },
-    props: ["question", "EditQuestion", "QuestionsUpdateOrder", "remove_question", "index", "delete_base_url"],
+    props: ["question", "EditQuestion", "QuestionsUpdateOrder", "remove_question", "index", "InputType", "delete_base_url"],
 
     data() {
         return { isMinus: [] };

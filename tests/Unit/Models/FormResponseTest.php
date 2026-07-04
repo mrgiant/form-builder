@@ -15,7 +15,7 @@ class FormResponseTest extends TestCase
 
     public function test_uses_form_responses_table(): void
     {
-        $this->assertEquals('form_responses', (new FormResponse())->getTable());
+        $this->assertEquals('gl_form_responses', (new FormResponse())->getTable());
     }
 
     public function test_fillable_contains_form_id_and_ip(): void
@@ -57,7 +57,7 @@ class FormResponseTest extends TestCase
             'ip'      => '192.168.1.1',
         ]);
 
-        $this->assertDatabaseHas('form_responses', [
+        $this->assertDatabaseHas('gl_form_responses', [
             'id'      => $response->id,
             'form_id' => $form->id,
             'ip'      => '192.168.1.1',
@@ -103,7 +103,7 @@ class FormResponseTest extends TestCase
 
         $form->delete();
 
-        $this->assertDatabaseMissing('form_responses', ['id' => $response->id]);
+        $this->assertDatabaseMissing('gl_form_responses', ['id' => $response->id]);
     }
 
     protected function makeForm(): Form

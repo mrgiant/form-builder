@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FormWorkflowNode extends Model
 {
+    public $table = 'gl_form_workflow_nodes';
+
     protected $fillable = ['form_id', 'type', 'name', 'mode', 'config', 'pos_x', 'pos_y'];
 
     protected function casts(): array
@@ -29,7 +31,7 @@ class FormWorkflowNode extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'form_workflow_node_users', 'node_id', 'user_id');
+        return $this->belongsToMany(User::class, 'gl_form_workflow_node_users', 'node_id', 'user_id');
     }
 
     public function outgoingEdges(): HasMany

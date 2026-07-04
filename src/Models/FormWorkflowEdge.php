@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormWorkflowEdge extends Model
 {
+    public $table = 'gl_form_workflow_edges';
+
     protected $fillable = ['form_id', 'from_node_id', 'to_node_id', 'branch'];
 
     public function fromNode(): BelongsTo

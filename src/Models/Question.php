@@ -9,6 +9,8 @@ class Question extends Model
 {
     use Translatable;
 
+    public $table = 'gl_questions';
+
     protected $casts = [
         'options' => 'array',
     ];

@@ -35,11 +35,11 @@ class UniqueAnswerResponses implements Rule
      */
     public function passes($attribute, $value)
     {
-        $answer_count = Answer::where('answers.value', 'like', $value)
+        $answer_count = Answer::where('gl_answers.value', 'like', $value)
           ->select(DB::raw('count(*) as total_count'))
-             ->join('form_responses', 'answers.form_response_id', '=', 'form_responses.id')
-             ->where('answers.question_id', $this->question_id)
-             ->where('form_responses.form_id', $this->form_id)->first();
+             ->join('gl_form_responses', 'gl_answers.form_response_id', '=', 'gl_form_responses.id')
+             ->where('gl_answers.question_id', $this->question_id)
+             ->where('gl_form_responses.form_id', $this->form_id)->first();
 
         return $answer_count->total_count <= 0;
     }

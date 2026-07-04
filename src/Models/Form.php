@@ -27,7 +27,7 @@ class Form extends Model
         'custom_html', 'custom_head', 'custom_js',
     ];
 
-    public $table = 'forms';
+    public $table = 'gl_forms';
 
     protected $translatable = ['name', 'description', 'thank_you_message', 'close_message', 'not_start_message', 'custom_html', 'custom_head', 'custom_js'];
 

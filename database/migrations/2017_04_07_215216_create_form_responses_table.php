@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormResponsesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateFormResponsesTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_responses', function (Blueprint $table) {
+        Schema::create('gl_form_responses', function (Blueprint $table) {
             $table->id();
 
-            $table->timestamps();
             $table->string('ip', 15)->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('form_id');
-            $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreign('form_id')->references('id')->on('gl_forms')->onDelete('cascade');
+            $table->string('approval_status')->default('not_required');
+
+            $table->timestamps();
         });
     }
 
@@ -31,6 +33,6 @@ class CreateFormResponsesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_responses');
+        Schema::dropIfExists('gl_form_responses');
     }
-}
+};

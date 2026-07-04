@@ -183,10 +183,10 @@ class WorkflowController extends Controller
             ->where('approval_status', 'pending')
             ->whereExists(function ($q) use ($user) {
                 $q->selectRaw('1')
-                    ->from('form_response_workflows as w')
-                    ->join('form_workflow_nodes as n', 'n.id', '=', 'w.current_node_id')
-                    ->join('form_workflow_node_users as nu', 'nu.node_id', '=', 'n.id')
-                    ->whereColumn('w.form_response_id', 'form_responses.id')
+                    ->from('gl_form_response_workflows as w')
+                    ->join('gl_form_workflow_nodes as n', 'n.id', '=', 'w.current_node_id')
+                    ->join('gl_form_workflow_node_users as nu', 'nu.node_id', '=', 'n.id')
+                    ->whereColumn('w.form_response_id', 'gl_form_responses.id')
                     ->where('w.status', 'pending')
                     ->where('n.type', 'approval')
                     ->where('nu.user_id', $user->id);

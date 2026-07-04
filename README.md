@@ -94,7 +94,7 @@ They also import a few **host-provided Vue libraries** via the `@` alias
 | Import | Provided by host at |
 | --- | --- |
 | `@/services/multilingualService` | `resources/js/services/` |
-| `@/components/fields_departmns/*` | shared field inputs (also used by other host features) |
+| `@/components/fields/*` | shared field inputs (also used by other host features) |
 | `@/components/fieldsAnswer/*` | shared answer-display inputs |
 | `@/components/Charts/Pie.vue` | shared chart components |
 

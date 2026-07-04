@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormResponseWorkflowAction extends Model
 {
+    public $table = 'gl_form_response_workflow_actions';
+
     protected $fillable = ['form_response_id', 'node_id', 'user_id', 'action', 'comment', 'acted_at'];
 
     protected function casts(): array

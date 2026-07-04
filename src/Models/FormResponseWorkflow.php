@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormResponseWorkflow extends Model
 {
+    public $table = 'gl_form_response_workflows';
+
     protected $fillable = ['form_response_id', 'status', 'current_node_id'];
 
     public function formResponse(): BelongsTo
