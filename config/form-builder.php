@@ -35,6 +35,33 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public (front-end) form routes
+    |--------------------------------------------------------------------------
+    |
+    | The no-auth routes end users hit to view and fill a form by its slug
+    | (GET /forms/{slug}). Registered at the application root — no 'admin'
+    | prefix, no 'auth'. If your app prefixes URLs by locale (e.g. /en/forms/..)
+    | via a route GROUP, disable this and point one route in your own locale
+    | group at PublicFormController::view_form instead.
+    |
+    */
+
+    'register_public_routes' => true,
+
+    'public_route_prefix' => '',
+
+    'public_middleware' => ['web'],
+
+    /*
+    | Vite entry points loaded on the standard (non custom-HTML) public form
+    | page, so the <forms-questions-answers> component can mount. Match your
+    | host's build. Set to [] if you inject the bundle another way.
+    */
+
+    'public_assets' => ['resources/js/app.js'],
+
+    /*
+    |--------------------------------------------------------------------------
     | User / authorization model
     |--------------------------------------------------------------------------
     |

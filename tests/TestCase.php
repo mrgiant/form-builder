@@ -9,6 +9,18 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
+    protected function setUp(): void
+    {
+        // The package controllers extend the host's base controller, which the
+        // bare testbench skeleton doesn't ship. Alias it to the framework base
+        // so controller-backed routes can be exercised in tests.
+        if (! class_exists(\App\Http\Controllers\Controller::class)) {
+            class_alias(\Illuminate\Routing\Controller::class, \App\Http\Controllers\Controller::class);
+        }
+
+        parent::setUp();
+    }
+
     protected function getPackageProviders($app): array
     {
         return [

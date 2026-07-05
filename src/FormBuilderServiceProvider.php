@@ -30,6 +30,10 @@ class FormBuilderServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         }
 
+        if (config('form-builder.register_public_routes')) {
+            $this->loadRoutesFrom(__DIR__.'/../routes/public.php');
+        }
+
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
 
