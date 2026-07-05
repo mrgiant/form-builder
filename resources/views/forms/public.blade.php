@@ -10,6 +10,14 @@
 
     @if (! empty(config('form-builder.public_assets')))
         @vite(config('form-builder.public_assets'))
+         <style>
+        :root {
+            --theme-color: {{ config('app.primary_color') }};
+            --theme-dark-color: {{ adjustColorForModeNew(config('app.primary_color'), 0.3) }};
+            --theme-light-color: {{ adjustColorForModeNew(config('app.primary_color'), 0.1, 0.1) }};
+            --theme-rgb-color: {{ getRGBColorFromHex(config('app.primary_color')) }};
+        }
+    </style>
     @endif
 
     <style>

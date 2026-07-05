@@ -44,8 +44,9 @@ class FormWorkflowNotificationTest extends TestCase
         $md = "| Field | Text |\n| --- | --- |\n| First Name | Odit |\n\n<script>alert(1)</script>";
         $data = (new FormWorkflowNotification($response, 'custom', 'T', $md))->toArray(null);
 
-        $this->assertStringContainsString('<table>', $data['message_html']);
-        $this->assertStringContainsString('<td>First Name</td>', $data['message_html']);
+        $this->assertStringContainsString('<table style="border-collapse:collapse', $data['message_html']);
+        $this->assertStringContainsString('First Name', $data['message_html']);
+        $this->assertStringContainsString('border:1px solid', $data['message_html']);
         // Raw HTML from (potentially attacker-controlled) values is escaped, not executed.
         $this->assertStringNotContainsString('<script>', $data['message_html']);
     }

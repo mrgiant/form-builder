@@ -58,7 +58,24 @@ class FormWorkflowNotification extends Notification
             'allow_unsafe_links' => false,
         ]);
 
-        return (string) $converter->convert($this->messageText());
+        return $this->inlineTableStyles((string) $converter->convert($this->messageText()));
+    }
+
+    /**
+     * Apply inline table styles. Email clients strip <style>/external CSS, so
+     * borders and padding must live on the elements themselves.
+     */
+    private function inlineTableStyles(string $html): string
+    {
+        if (! str_contains($html, '<table>')) {
+            return $html;
+        }
+
+        return strtr($html, [
+            '<table>' => '<table style="border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;">',
+            '<th>' => '<th style="border:1px solid #d1d5db;padding:6px 10px;text-align:left;background:#f3f4f6;font-weight:600;">',
+            '<td>' => '<td style="border:1px solid #d1d5db;padding:6px 10px;">',
+        ]);
     }
 
     public function toMail($notifiable): MailMessage
