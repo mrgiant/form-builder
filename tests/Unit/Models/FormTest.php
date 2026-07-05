@@ -26,11 +26,6 @@ class FormTest extends TestCase
         }
     }
 
-    public function test_emails_is_cast_to_array(): void
-    {
-        $this->assertEquals('array', (new Form())->getCasts()['emails']);
-    }
-
     public function test_has_many_questions(): void
     {
         $relation = (new Form())->questions();

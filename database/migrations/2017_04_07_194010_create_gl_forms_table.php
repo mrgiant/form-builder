@@ -22,14 +22,8 @@ return new class extends Migration
             $table->text('not_start_message')->nullable();
             $table->string('slug')->unique()->index();
             $table->tinyInteger('status')->default(1);
-            $table->tinyInteger('show_number')->default(1);
             $table->dateTime('begin_at')->nullable();
             $table->dateTime('end_at')->nullable();
-
-            // Email notifications
-            $table->tinyInteger('email_notifications_new_responses')->default(0);
-            $table->tinyInteger('attachment_in_email_notifications')->default(0);
-            $table->json('emails')->nullable();
 
             // Custom design
             $table->longText('custom_html')->nullable();

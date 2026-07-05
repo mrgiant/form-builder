@@ -67,10 +67,6 @@ class FormsController extends Controller
         $form->begin_at = $request->begin_at ? Carbon::parse($request->begin_at) : null;
         $form->end_at = $request->end_at ? Carbon::parse($request->end_at) : null;
         $form->status = $request->status ? 1 : 0;
-        $form->show_number = $request->show_number ? 1 : 0;
-        $form->email_notifications_new_responses = $request->email_notifications_new_responses ? 1 : 0;
-        $form->attachment_in_email_notifications = $request->attachment_in_email_notifications ? 1 : 0;
-        $form->emails = $request->emails;
         $form->slug = Str::uuid()->toString();
         $form->save();
 
@@ -107,10 +103,6 @@ class FormsController extends Controller
         $form->begin_at = $request->begin_at ? Carbon::parse($request->begin_at) : null;
         $form->end_at = $request->end_at ? Carbon::parse($request->end_at) : null;
         $form->status = $request->status ? 1 : 0;
-        $form->show_number = $request->show_number ? 1 : 0;
-        $form->email_notifications_new_responses = $request->email_notifications_new_responses ? 1 : 0;
-        $form->attachment_in_email_notifications = $request->attachment_in_email_notifications ? 1 : 0;
-        $form->emails = $request->emails;
         $form->save();
 
         if (count($translations) > 0) {
@@ -222,7 +214,6 @@ class FormsController extends Controller
             'close_message' => $form->close_message,
             'not_start_message' => $form->not_start_message,
             'status' => (int) $form->status,
-            'show_number' => (int) $form->show_number,
             'begin_at' => $form->begin_at,
             'end_at' => $form->end_at,
             'all_translation_feilds' => $form->all_translation_feilds,

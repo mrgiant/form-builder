@@ -3,7 +3,7 @@
     <label
       :class="[question.required == true ? 'required' : '']"
       :for="'q-' + question.id"
-      >{{  show_number ? question.order + ". " + getTranslatedField(question, 'label') : getTranslatedField(question, 'label') }}</label
+      >{{ question.order + ". " + getTranslatedField(question, 'label') }}</label
     >
 
     <small
@@ -35,7 +35,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data", "show_number","show"],
+  props: ["question", "form", "form_data", "show"],
 
   data() {
     return {

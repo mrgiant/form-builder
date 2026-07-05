@@ -106,7 +106,7 @@ import RadioButton from '../../fieldsAnswer/RadioButton.vue';
 export default {
   components: { Group, GeneralInput, FileUploadInput, TextArea, SelectOption, CheckboxList, RadioButton },
 
-  props: ['form_id', 'slug', 'show_number', 'show', 'data'],
+  props: ['form_id', 'slug', 'show', 'data'],
 
   data() {
     return {

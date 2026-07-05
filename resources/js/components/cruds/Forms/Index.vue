@@ -43,9 +43,6 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <toggle-box v-model="form.status" :show="false" field_name="add_status" label_name="Active" />
-                    <toggle-box v-model="form.show_number" :show="false" field_name="add_show_number" label_name="Show Question Numbers" />
-                    <toggle-box v-model="form.email_notifications_new_responses" :show="false"
-                        field_name="add_email_notif" label_name="Email Notifications" />
                 </div>
             </div>
         </template>
@@ -99,9 +96,6 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <toggle-box v-model="form_update.status" :show="false" field_name="edit_status" label_name="Active" />
-                    <toggle-box v-model="form_update.show_number" :show="false" field_name="edit_show_number" label_name="Show Question Numbers" />
-                    <toggle-box v-model="form_update.email_notifications_new_responses" :show="false"
-                        field_name="edit_email_notif" label_name="Email Notifications" />
                 </div>
             </div>
         </template>
@@ -153,8 +147,6 @@ const emptyForm = {
     begin_at: '',
     end_at: '',
     status: true,
-    show_number: false,
-    email_notifications_new_responses: false,
 };
 
 export default {
@@ -221,8 +213,6 @@ export default {
                 begin_at:                           this.form.begin_at,
                 end_at:                             this.form.end_at,
                 status:                             this.form.status ? 1 : 0,
-                show_number:                        this.form.show_number ? 1 : 0,
-                email_notifications_new_responses:  this.form.email_notifications_new_responses ? 1 : 0,
             }).then(() => {
                 this.form = new Form({ ...emptyForm });
                 this.$refs.glDataTableRef.GetItemLists();
@@ -257,8 +247,6 @@ export default {
             this.form_update.begin_at                         = item.begin_at ? item.begin_at.substring(0, 16) : '';
             this.form_update.end_at                           = item.end_at   ? item.end_at.substring(0, 16)   : '';
             this.form_update.status                           = !!item.status;
-            this.form_update.show_number                      = !!item.show_number;
-            this.form_update.email_notifications_new_responses = !!item.email_notifications_new_responses;
 
             loadMultilingual(this.model, 6, this.isLoadingUpdate, (newState) => {
                 this.isLoadingUpdate = newState;
@@ -282,8 +270,6 @@ export default {
                 begin_at:                           this.form_update.begin_at,
                 end_at:                             this.form_update.end_at,
                 status:                             this.form_update.status ? 1 : 0,
-                show_number:                        this.form_update.show_number ? 1 : 0,
-                email_notifications_new_responses:  this.form_update.email_notifications_new_responses ? 1 : 0,
             }).then(() => {
                 this.$refs.glDataTableRef.GetItemLists();
                 this.isOpenUpdate = false;

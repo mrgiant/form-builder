@@ -33,9 +33,7 @@ class Form extends Model
 
     protected $appends = ['all_translation_feilds'];
 
-    protected $casts = [
-        'emails' => 'array',
-    ];
+    protected $casts = [];
 
     // protected $date = ['begin_at', 'end_at', 'created_at', 'updated_at'];
 

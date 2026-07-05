@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use Mrgiant\FormBuilder\Services\WorkflowRunner;
 use Mrgiant\FormBuilder\Models\Form;
 use Mrgiant\FormBuilder\Models\FormResponse;
-use App\Notifications\GeneralNotficationMailsAttachment;
 use Mrgiant\FormBuilder\Rules\UniqueAnswerResponses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class AnswerController extends Controller
@@ -181,16 +179,6 @@ class AnswerController extends Controller
             foreach ($answerArray as $qid => $ans) {
                 // print_r($ans);
                 $sr->answers()->create($ans);
-            }
-
-            if ($form->email_notifications_new_responses) {
-                if ($form->emails) {
-                    $msg = 'There is New form of ('.$form->name.') response';
-
-                    $GeneralNotfication = new GeneralNotficationMailsAttachment($msg, url(route('admin.forms.responses.single', [$form->id, $sr->id])), $form->id, $sr->id);
-
-                    Notification::route('mail', $form->emails)->notify($GeneralNotfication);
-                }
             }
 
             app(WorkflowRunner::class)->start($sr);

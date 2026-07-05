@@ -16,7 +16,6 @@
         <forms-questions-answers
             :data='[]'
             :form_id="'{{ $form->id }}'"
-            :show_number="'{{ $form->show_number == 1 ? 'true' : 'false' }}'"
             :show="false"
         ></forms-questions-answers>
     </div>
