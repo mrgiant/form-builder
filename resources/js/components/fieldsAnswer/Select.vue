@@ -22,13 +22,13 @@
 
      <dropdown
                     :options_top_size="0"
-                    :has_cancel="true"
+                    :has_cancel="!(show === true || show === 'true')"
                    :options="question.options"
                     :is_required="false"
                     :field_name="'q-' + question.id"
-                   
-                  
-                    :show="false"
+
+
+                    :show="show === true || show === 'true'"
                     @selected="form.errors.clear('q-' + question.id)"
                     :error_message="form.errors.get('q-' + question.id)"
                     v-model="form_data['q-' + question.id]"
@@ -52,7 +52,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   data() {
     return {};

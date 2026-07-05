@@ -26,7 +26,7 @@
       }"
          :name="'q-' + question.id"
         v-model="form_data['q-' + question.id]"
-       
+        :readonly="show === true || show === 'true'"
         @keydown="form.errors.clear('q-' + question.id)"
       ></textarea>
 
@@ -43,7 +43,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   methods: {},
 };

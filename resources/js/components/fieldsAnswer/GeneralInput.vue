@@ -36,7 +36,7 @@
     
       :type="InputType"
       :name="'q-' + question.id"
-    
+      :readonly="show === true || show === 'true'"
       @keydown="form.errors.clear('q-' + question.id)"
     />
 
@@ -55,7 +55,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data","InputType"],
+  props: ["question", "form", "form_data", "InputType", "show"],
 
   methods: {},
 };

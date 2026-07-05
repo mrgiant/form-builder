@@ -29,7 +29,7 @@
  <div class="flex-auto">
             <div class="space-y-2">
                 <label v-for="(option, index) in this.question.options" :key="index" class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                    <input type="radio" :checked="form_data['q-' + question.id]==option" @input="form.errors.clear('q-' + question.id)" v-model="form_data['q-' + question.id]" :name="'q-' + question.id" :id="'Radio'+index" :value="option" /> {{ option }}
+                    <input type="radio" :checked="form_data['q-' + question.id]==option" :disabled="show === true || show === 'true'" @input="form.errors.clear('q-' + question.id)" v-model="form_data['q-' + question.id]" :name="'q-' + question.id" :id="'Radio'+index" :value="option" /> {{ option }}
                 </label>
             </div>
         </div>
@@ -49,7 +49,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   data() {
     return { checkedEngagements: [] };

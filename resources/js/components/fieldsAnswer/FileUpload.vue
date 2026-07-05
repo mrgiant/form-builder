@@ -20,6 +20,7 @@
 
     <div class="ms-4 mt-2">
       <input
+        v-if="!(show === true || show === 'true')"
         :id="'q-' + question.id"
         :name="'q-' + question.id"
         type="file"
@@ -38,6 +39,10 @@
         <i class="fa-solid fa-download mr-1"></i> Download current file
       </a>
 
+      <span v-else-if="show === true || show === 'true'" class="block mt-1 text-sm text-gray-400 italic">
+        No file uploaded
+      </span>
+
       <span
         class="gl-span-form-error"
         v-if="form.errors.has('q-' + question.id)"
@@ -50,7 +55,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   computed: {
     isDownloadable() {

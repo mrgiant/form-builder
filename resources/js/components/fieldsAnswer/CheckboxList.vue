@@ -26,7 +26,7 @@
    <div class="flex-auto">
             <div class="space-y-2">
                 <label v-for="(option, index) in (this.question.options || [])" :key="index" class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                    <input type="checkbox" :name="'q-' + question.id+'[]'"  @input="form.errors.clear('q-' + question.id)" v-model="form_data['q-' + question.id]"  :id="'Checkbox'+index" :value="option" /> {{ option }}
+                    <input type="checkbox" :name="'q-' + question.id+'[]'" :disabled="show === true || show === 'true'" @input="form.errors.clear('q-' + question.id)" v-model="form_data['q-' + question.id]"  :id="'Checkbox'+index" :value="option" /> {{ option }}
                 </label>
             </div>
     </div>
@@ -49,7 +49,7 @@
 <script>
 export default {
   components: {},
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   data() {
     return {

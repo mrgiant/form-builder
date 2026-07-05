@@ -35,47 +35,47 @@
         >
           <group
             v-if="question.question_type === 'Group'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <general-input
             v-if="question.question_type === 'Short answer'"
-            :question="question" :form="form" :form_data="form_data" InputType="text"
+            :question="question" :form="form" :form_data="form_data" :show="show" InputType="text"
           />
           <general-input
             v-if="question.question_type === 'Number'"
-            :question="question" :form="form" :form_data="form_data" InputType="number"
+            :question="question" :form="form" :form_data="form_data" :show="show" InputType="number"
           />
           <general-input
             v-if="question.question_type === 'Email'"
-            :question="question" :form="form" :form_data="form_data" InputType="email"
+            :question="question" :form="form" :form_data="form_data" :show="show" InputType="email"
           />
           <file-upload-input
             v-if="question.question_type === 'File upload'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <general-input
             v-if="question.question_type === 'Date'"
-            :question="question" :form="form" :form_data="form_data" InputType="date"
+            :question="question" :form="form" :form_data="form_data" :show="show" InputType="date"
           />
           <general-input
             v-if="question.question_type === 'Time'"
-            :question="question" :form="form" :form_data="form_data" InputType="time"
+            :question="question" :form="form" :form_data="form_data" :show="show" InputType="time"
           />
           <text-area
             v-if="question.question_type === 'Paragraph'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <select-option
             v-if="question.question_type === 'Drop-down'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <checkbox-list
             v-if="question.question_type === 'Checkboxes'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <radio-button
             v-if="question.question_type === 'Multiple choice'"
-            :question="question" :form="form" :form_data="form_data"
+            :question="question" :form="form" :form_data="form_data" :show="show"
           />
           <div v-if="question.question_type === 'Label'" class="py-2">
             <p class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ getTranslatedField(question, 'label') }}</p>

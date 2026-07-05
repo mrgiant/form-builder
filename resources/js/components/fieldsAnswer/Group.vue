@@ -41,6 +41,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
             InputType="text"
           ></general-input>
 
@@ -49,6 +50,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
             InputType="number"
           ></general-input>
 
@@ -58,6 +60,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
             InputType="email"
           ></general-input>
 
@@ -67,6 +70,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
           ></file-upload-input>
 
            <general-input
@@ -74,6 +78,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
             InputType="date"
           ></general-input>
 
@@ -82,6 +87,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
             InputType="time"
           ></general-input>
 
@@ -90,6 +96,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
           ></text-area>
 
           <select-option
@@ -97,6 +104,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
           ></select-option>
 
           <checkbox-list
@@ -104,6 +112,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
           ></checkbox-list>
 
           <radio-button
@@ -111,6 +120,7 @@
             :question="sub_question"
             :form="form"
             :form_data="form_data"
+            :show="show"
           ></radio-button>
         </div>
 
@@ -150,7 +160,7 @@ export default {
 
 
   },
-  props: ["question", "form", "form_data"],
+  props: ["question", "form", "form_data", "show"],
 
   methods: {
 
