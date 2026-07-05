@@ -2,7 +2,7 @@
     "name": "mrgiant/form-builder",
     "description": "A Laravel form-builder module: dynamic forms, questions, responses, approval workflows, with Vue 3 builder components and Blade renderers.",
     "type": "library",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "license": "MIT",
     "keywords": [
         "laravel",

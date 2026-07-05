@@ -4,6 +4,7 @@ namespace Mrgiant\FormBuilder;
 
 use Illuminate\Support\ServiceProvider;
 use Mrgiant\FormBuilder\Console\InstallCommand;
+use Mrgiant\FormBuilder\Console\UninstallCommand;
 
 class FormBuilderServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,7 @@ class FormBuilderServiceProvider extends ServiceProvider
 
             $this->commands([
                 InstallCommand::class,
+                UninstallCommand::class,
             ]);
         }
     }
