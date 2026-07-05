@@ -177,9 +177,16 @@ class WorkflowRunner
     protected function runNotification(FormResponse $response, FormWorkflowNode $node): void
     {
         $message = $node->config['message'] ?? null;
+        if ($message) {
+            $message = $this->renderTemplate($message, $response);
+        }
+
+        $title = ! empty($node->config['title'])
+            ? $this->renderTemplate($node->config['title'], $response)
+            : $node->name;
 
         $node->users->each(fn (User $user) => $user->notify(
-            new FormWorkflowNotification($response, 'custom', $node->name, $message)
+            new FormWorkflowNotification($response, 'custom', $title, $message)
         ));
 
         $this->log($response, $node, null, 'notified');
@@ -366,6 +373,10 @@ class WorkflowRunner
 
             if ($token === 'response_id') {
                 return (string) $response->id;
+            }
+
+            if ($token === 'form_name') {
+                return (string) (optional($response->form)->name ?? '');
             }
 
             if (str_starts_with($token, 'q-')) {
@@ -588,8 +599,16 @@ class WorkflowRunner
 
     public function notifyCurrentApprovers(FormResponse $response): void
     {
+        $node = $this->currentNode($response);
+        $message = $node && ! empty($node->config['message'])
+            ? $this->renderTemplate($node->config['message'], $response)
+            : null;
+        $title = $node && ! empty($node->config['title'])
+            ? $this->renderTemplate($node->config['title'], $response)
+            : null;
+
         $this->currentApprovers($response)->each(
-            fn (User $user) => $user->notify(new FormWorkflowNotification($response, 'pending'))
+            fn (User $user) => $user->notify(new FormWorkflowNotification($response, 'pending', $title, $message))
         );
     }
 

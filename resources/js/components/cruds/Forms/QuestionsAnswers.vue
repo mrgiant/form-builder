@@ -186,7 +186,7 @@ export default {
     },
 
     getQuestions() {
-      axios.get(`/admin/forms/${this.form_id}/questions`)
+      axios.get(`/forms/${this.form_id}/questions`)
         .then(res => {
           const list = res.data;
           this.questions = list.map(item => this.mapQuestion(item));

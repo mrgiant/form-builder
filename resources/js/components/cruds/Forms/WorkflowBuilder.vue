@@ -25,6 +25,29 @@
                     <multi-select-dropdown :options="userOptions" :is_required="true" field_name="node_users"
                         :label_name="'Approvers'" :show="false" v-model="editNode.userIds" placeholder="Select approvers" />
                 </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (optional)</label>
+                    <input v-model="editNode.config.title" type="text" placeholder="Title shown to approvers…"
+                        @focus="setHttpTarget(editNode.config, 'title', $event)"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div class="mb-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-3">
+                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Insert a field placeholder into the box you last clicked</label>
+                    <select @change="insertField($event.target.value); $event.target.value = ''"
+                        class="appearance-none w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                        <option value="" disabled selected>Choose a field…</option>
+                        <option value="response_id">Response ID</option>
+                        <option value="form_name">Form name</option>
+                        <option v-for="q in questions" :key="q.id" :value="'q-' + q.id">{{ q.label }}</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message to approvers (optional)</label>
+                    <textarea v-model="editNode.config.message" rows="3" placeholder="Message shown to approvers…"
+                        @focus="setHttpTarget(editNode.config, 'message', $event)"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    <p class="mt-1 text-xs text-gray-400">Markdown supported.</p>
+                </div>
             </template>
 
             <template v-else-if="editType === 'notification'">
@@ -33,9 +56,27 @@
                         :label_name="'Recipients'" :show="false" v-model="editNode.userIds" placeholder="Select recipients" />
                 </div>
                 <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (optional)</label>
+                    <input v-model="editNode.config.title" type="text" placeholder="Notification title…"
+                        @focus="setHttpTarget(editNode.config, 'title', $event)"
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div class="mb-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-3">
+                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Insert a field placeholder into the box you last clicked</label>
+                    <select @change="insertField($event.target.value); $event.target.value = ''"
+                        class="appearance-none w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                        <option value="" disabled selected>Choose a field…</option>
+                        <option value="response_id">Response ID</option>
+                        <option value="form_name">Form name</option>
+                        <option v-for="q in questions" :key="q.id" :value="'q-' + q.id">{{ q.label }}</option>
+                    </select>
+                </div>
+                <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
                     <textarea v-model="editNode.config.message" rows="3" placeholder="Message to send…"
+                        @focus="setHttpTarget(editNode.config, 'message', $event)"
                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    <p class="mt-1 text-xs text-gray-400">Markdown supported.</p>
                 </div>
             </template>
 
@@ -122,6 +163,7 @@
                         class="appearance-none w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                         <option value="" disabled selected>Choose a field…</option>
                         <option value="response_id">Response ID</option>
+                        <option value="form_name">Form name</option>
                         <option v-for="q in questions" :key="q.id" :value="'q-' + q.id">{{ q.label }}</option>
                     </select>
                 </div>
@@ -619,7 +661,7 @@ export default {
             if (type === 'update') { return { target: 'approval_status', status: 'approved', updates: [{ field: null, value: '' }], message: '' }; }
             if (type === 'http') { return { method: 'GET', url: '', headers: [{ key: '', value: '' }], query: [{ key: '', value: '' }], body_type: 'none', body: [{ key: '', value: '' }], raw_body: '', answers_key: 'label', auth: { type: 'none', username: '', password: '', token: '' }, timeout: 30 }; }
             if (type === 'terminate') { return { status: 'rejected', message: '' }; }
-            return { message: '' };
+            return { title: '', message: '' };
         },
         editExisting(index) {
             const n = this.nodes[index];

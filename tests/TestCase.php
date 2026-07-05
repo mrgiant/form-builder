@@ -11,12 +11,10 @@ abstract class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
-        // The package controllers extend the host's base controller, which the
-        // bare testbench skeleton doesn't ship. Alias it to the framework base
-        // so controller-backed routes can be exercised in tests.
-        if (! class_exists(\App\Http\Controllers\Controller::class)) {
-            class_alias(\Illuminate\Routing\Controller::class, \App\Http\Controllers\Controller::class);
-        }
+        // The package controllers extend the host's base controller (with the
+        // ValidatesRequests/AuthorizesRequests traits), which the bare testbench
+        // skeleton doesn't ship. Load a stub mirroring a standard host's.
+        require_once __DIR__.'/Stubs/AppController.php';
 
         parent::setUp();
     }

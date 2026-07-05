@@ -5,6 +5,8 @@ namespace Mrgiant\FormBuilder\Notifications;
 use Mrgiant\FormBuilder\Models\FormResponse;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class FormWorkflowNotification extends Notification
 {
@@ -39,15 +41,31 @@ class FormWorkflowNotification extends Notification
             'response_id' => $this->response->id,
             'title' => $this->title(),
             'message' => $this->messageText(),
+            'message_html' => $this->messageHtml(),
             'url' => $this->url(),
         ];
+    }
+
+    /**
+     * The message rendered from GitHub-Flavored Markdown (tables, strikethrough,
+     * task lists, autolinks) to HTML. Raw HTML is escaped so submitter answer
+     * values interpolated via placeholders can't inject markup.
+     */
+    private function messageHtml(): string
+    {
+        $converter = new GithubFlavoredMarkdownConverter([
+            'html_input' => 'escape',
+            'allow_unsafe_links' => false,
+        ]);
+
+        return (string) $converter->convert($this->messageText());
     }
 
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject($this->title())
-            ->line($this->messageText())
+            ->line(new HtmlString($this->messageHtml()))
             ->action(__('Open'), url($this->url()));
     }
 
@@ -63,7 +81,7 @@ class FormWorkflowNotification extends Notification
             'approved' => __('Your submission was approved'),
             'rejected' => __('Your submission was rejected'),
             'terminated' => __('Your submission was closed'),
-            default => __('A form response needs your approval'),
+            default => $this->customTitle ?: __('A form response needs your approval'),
         };
     }
 
@@ -74,7 +92,7 @@ class FormWorkflowNotification extends Notification
             'approved' => __('Your response to :form has been approved.', ['form' => $this->formName()]),
             'rejected' => __('Your response to :form has been rejected.', ['form' => $this->formName()]),
             'terminated' => __('Your response to :form has been closed.', ['form' => $this->formName()]),
-            default => __('A response to :form is waiting for your approval.', ['form' => $this->formName()]),
+            default => $this->customMessage ?: __('A response to :form is waiting for your approval.', ['form' => $this->formName()]),
         };
     }
 

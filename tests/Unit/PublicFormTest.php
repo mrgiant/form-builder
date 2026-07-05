@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Mrgiant\FormBuilder\Models\Form;
+use Mrgiant\FormBuilder\Models\Question;
 use Mrgiant\FormBuilder\Tests\TestCase;
 
 class PublicFormTest extends TestCase
@@ -41,5 +42,31 @@ class PublicFormTest extends TestCase
     public function test_missing_slug_returns_404(): void
     {
         $this->get('/forms/does-not-exist')->assertNotFound();
+    }
+
+    public function test_public_data_routes_registered(): void
+    {
+        $this->assertTrue(Route::has('frontend.form.info'));
+        $this->assertTrue(Route::has('frontend.form.questions'));
+        $this->assertTrue(Route::has('frontend.form.submit'));
+    }
+
+    public function test_public_submission_creates_response_and_answer(): void
+    {
+        $form = new Form(['name' => 'Contact']);
+        $form->slug = 'contact-'.uniqid();
+        $form->save();
+
+        $q = new Question();
+        $q->label = 'Your name';
+        $q->question_type = 'Text';
+        $q->form_id = $form->id;
+        $q->save();
+
+        $this->post('/forms/'.$form->id.'/d', ['q-'.$q->id => 'Alice'])
+            ->assertOk();
+
+        $this->assertDatabaseHas('gl_form_responses', ['form_id' => $form->id]);
+        $this->assertDatabaseHas('gl_answers', ['question_id' => $q->id, 'value' => 'Alice']);
     }
 }
