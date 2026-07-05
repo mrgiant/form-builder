@@ -1,34 +1,35 @@
 <template>
     <GlDynamicConfirmation ref="ConfirmationDelete"></GlDynamicConfirmation>
 
-    <div class="relative flex flex-col min-w-0 break-words bg-white border border-gray-300 rounded-sm dark:bg-gray-900 dark:border-gray-700">
-        <div class="flex justify-between px-3 py-3 mb-0 bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
+    <div class="bg-white border rounded-lg border-stroke shadow-default dark:border-white/10 dark:bg-gray-900">
+        <div class="flex justify-between px-3 py-4 border-b border-stroke dark:border-white/10">
             <h3>
                 <div>
-                    <label class="font-medium text-gray-800 dark:text-gray-200">{{ question.order + ". " + question.label }}</label>
-                    <small v-if="question.description != ''" class="block mt-1 text-gray-600 dark:text-gray-400"
+                    <label>{{ question.order + ". " + question.label }}</label>
+                    <small v-if="question.description != ''" class="block mt-1 text-gray-700 dark:text-gray-400"
                         :class="[question.is_rtl == 1 ? 'mr-4' : 'ml-4']">{{ question.description }}</small>
                 </div>
             </h3>
             <div class="flex items-center gap-1">
                 <button type="button" v-on:click.prevent="EditQuestion(question.id)"
-                    class="inline-block px-2 py-1 ml-1 text-xs font-normal leading-tight text-center text-white bg-blue-600 border rounded select-none hover:bg-blue-700">
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center text-white bg-blue-600 rounded-full cursor-pointer hover:bg-blue-700">
                     <i class="fa fa-edit"></i>
                 </button>
                 <button type="button" v-on:click.prevent="deleteQuestion(question.id)"
-                    class="inline-block px-2 py-1 ml-1 text-xs font-normal leading-tight text-center text-white bg-red-600 border rounded select-none hover:bg-red-700">
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center text-white bg-red-600 rounded-full cursor-pointer hover:bg-red-700">
                     <i class="fa fa-trash"></i>
                 </button>
                 <button v-on:click="toggleMinus(question.id)" type="button"
-                    class="inline-block px-3 py-1 font-normal leading-normal text-center border rounded select-none dark:border-gray-600">
+                    class="inline-block w-8 h-8 mb-1 mr-1 leading-8 text-center rounded-full cursor-pointer border border-gray-300 dark:border-gray-600">
                     <i class="fas" :class="isMinus[question.id] ? 'fa-plus' : 'fa-minus'"></i>
                 </button>
             </div>
         </div>
         <div class="flex-auto p-6" v-if="!isMinus[question.id]">
-            <draggable class="grid grid-cols-12 gap-4" group="children" :sort="true"
+            <draggable class="grid grid-cols-12 gap-4 min-h-16" :sort="true"
                 v-model="question.children"
-                :options="{ animation: 200, group: 'children' }"
+                :group="{ name: 'children', pull: true, put: acceptFieldPut }"
+                :animation="200"
                 item-key="id"
                 @change="QuestionsUpdateOrder(question.children, question.id)">
                 <template #item="{ element, index }">
@@ -99,6 +100,13 @@ export default {
     methods: {
         toggleMinus(index) {
             this.isMinus[index] = !this.isMinus[index];
+        },
+
+        // Accept existing fields dragged in from the canvas or another group,
+        // but reject palette clones (those are added to a group via the modal's
+        // Group selector, not by dropping a new field type straight in).
+        acceptFieldPut(to, from) {
+            return from.options.group.pull !== 'clone';
         },
 
         async deleteQuestion(id) {

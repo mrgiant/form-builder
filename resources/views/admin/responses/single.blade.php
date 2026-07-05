@@ -32,11 +32,38 @@
                     @php $answer = $data[$qid] ?? ''; @endphp
                     @if($answer !== '' && $answer !== null)
                         @if(is_string($answer) && preg_match('~^https?://~i', $answer))
-                            <a href="{{ $answer }}" target="_blank" rel="noopener"
-                                class="text-sm text-primary hover:underline break-all inline-flex items-center gap-1">
-                                <i class="fa-solid fa-up-right-from-square text-xs"></i>
-                                <span class="break-all">{{ $answer }}</span>
-                            </a>
+                            @php
+                                $isDownload = str_contains($answer, '/downloadAttachment/');
+                                $ext = strtolower(pathinfo(parse_url($answer, PHP_URL_PATH) ?? '', PATHINFO_EXTENSION));
+                                // Decode the stored path and strip the uniqid_ prefix to show the real filename.
+                                $fileName = $isDownload
+                                    ? preg_replace('/^[0-9a-f]{12,15}_/i', '', basename(str_replace('slash_mw_attachment', '/', $answer)))
+                                    : $answer;
+                                $iconMap = [
+                                    'jpg'=>'fa-file-image','jpeg'=>'fa-file-image','png'=>'fa-file-image','gif'=>'fa-file-image','webp'=>'fa-file-image','svg'=>'fa-file-image',
+                                    'pdf'=>'fa-file-pdf','doc'=>'fa-file-word','docx'=>'fa-file-word',
+                                    'xls'=>'fa-file-excel','xlsx'=>'fa-file-excel','csv'=>'fa-file-csv',
+                                    'ppt'=>'fa-file-powerpoint','pptx'=>'fa-file-powerpoint',
+                                    'zip'=>'fa-file-zipper','rar'=>'fa-file-zipper',
+                                    'mp4'=>'fa-file-video','mov'=>'fa-file-video','webm'=>'fa-file-video',
+                                    'mp3'=>'fa-file-audio','wav'=>'fa-file-audio','txt'=>'fa-file-lines',
+                                ];
+                                $fileIcon = $iconMap[$ext] ?? 'fa-file';
+                            @endphp
+                            @if($isDownload)
+                                <a href="{{ $answer }}" target="_blank" rel="noopener"
+                                    class="inline-flex items-center gap-2 max-w-full px-3 py-2 rounded-lg border border-stroke dark:border-white/10 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+                                    <i class="fa-solid {{ $fileIcon }} text-primary"></i>
+                                    <span class="text-sm text-gray-800 dark:text-gray-100 truncate max-w-[18rem]">{{ $fileName ?: 'Attachment' }}</span>
+                                    <i class="fa-solid fa-download text-xs text-gray-400 group-hover:text-primary"></i>
+                                </a>
+                            @else
+                                <a href="{{ $answer }}" target="_blank" rel="noopener"
+                                    class="text-sm text-primary hover:underline break-all inline-flex items-center gap-1">
+                                    <i class="fa-solid fa-up-right-from-square text-xs"></i>
+                                    <span class="break-all">{{ $answer }}</span>
+                                </a>
+                            @endif
                         @else
                             <p class="text-sm text-gray-900 dark:text-white">{{ $answer }}</p>
                         @endif

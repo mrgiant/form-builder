@@ -376,7 +376,7 @@
             <div v-if="viewMode === 'grid'">
                 <draggable class="grid grid-cols-12 gap-4" group="children" :sort="true"
                     v-model="questions"
-                    :options="{ animation: 200, group: 'children' }"
+                    :animation="200"
                     item-key="id"
                     @change="questionsUpdateOrder(questions, null)">
                     <template #item="{ element, index }">
@@ -412,15 +412,15 @@
                     </draggable>
                 </aside>
 
-                <div class="flex-1 min-h-60 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
-                    <draggable class="grid grid-cols-12 gap-4 min-h-40"
+                <div class="flex-1 min-h-[400px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                    <draggable class="flex flex-col gap-4 min-h-40 pb-35"
                         v-model="questions" item-key="id"
                         :group="{ name: 'formfields', pull: true, put: true }"
-                        :options="{ animation: 200 }"
+                        :animation="200" ghost-class="gl-drop-ghost"
                         @add="onPaletteDrop"
                         @update="questionsUpdateOrder(questions, null)">
                         <template #item="{ element, index }">
-                            <div :class="element.question_size_col || 'col-span-12'">
+                            <div>
                                 <question-renderer v-if="!element.__palette" :question="element" :index="index"
                                     :EditQuestion="editQuestion" :remove_question="removeQuestion"
                                     :QuestionsUpdateOrder="questionsUpdateOrderAfterRemove"
@@ -608,7 +608,13 @@ export default {
         onPaletteDrop(event) {
             const index = event.newIndex;
             const dropped = this.questions[index];
-            const type = dropped && dropped.__palette ? dropped.question_type : '';
+            // A real field dragged in from a group (not a palette clone): keep it
+            // and just persist the new order/parent — don't open the Add modal.
+            if (!dropped || !dropped.__palette) {
+                this.questionsUpdateOrder(this.questions, null);
+                return;
+            }
+            const type = dropped.question_type;
             this.questions.splice(index, 1);
             this.pendingDropIndex = index;
             this.openAdd(type);
@@ -1100,6 +1106,19 @@ export default {
 </script>
 
 <style>
+/* Drag-drop placeholder: a palette field is a small row, so its default ghost
+   is a tiny box. Force the drop slot to a full-width, field-sized box so it's
+   clear where the field will land. */
+.gl-drop-ghost {
+    display: block !important;
+    width: 100% !important;
+    min-height: 5rem;
+    border: 2px dashed var(--theme-color, #6366f1);
+    border-radius: .5rem;
+    background: color-mix(in srgb, var(--theme-color, #6366f1) 8%, transparent);
+}
+.gl-drop-ghost > * { visibility: hidden; }
+
 /* Give the design-editor CodeMirror instances a usable height (they collapse to
    one line by default inside the modal). Targets the library-rendered editor. */
 .gl-design-field .CodeEditor,
